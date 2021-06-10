@@ -111,7 +111,6 @@ body {
 }
 
 .show-password {
-    display: flex;
     justify-content: left;
     margin-top: 16px;
     width: 80%;
@@ -123,6 +122,16 @@ body {
     user-select: none;
     color: #666666;
     font-size: 16px;
+    vertical-align: middle;
+}
+
+.show-password label {
+    display: block;
+}
+
+.show-password label:hover {
+    cursor: pointer;
+    vertical-align: middle;
 }
 
 .forgot-password {

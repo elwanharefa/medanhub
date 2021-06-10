@@ -6,7 +6,3 @@ function showpassword() {
         x.type = "password";
     }
 };
-
-function login(){
-    console.log("berhasil")
-};
