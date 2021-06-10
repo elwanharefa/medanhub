@@ -5,8 +5,8 @@ function showpassword() {
     } else {
         x.type = "password";
     }
-}
+};
 
 function login(){
     console.log("berhasil")
-}
+};
