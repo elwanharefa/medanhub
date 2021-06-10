@@ -1,0 +1,47 @@
+html, body{
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    margin: 0;
+}
+
+body{
+    width: 100%;
+}
+
+.menu{
+    float: left;
+    width: 20%;
+    background: green;
+    height: 100%;
+    color: white;
+}
+
+ul{
+    padding-top: 200px;
+}
+
+.main{
+    float: right;
+    width: 80%;
+}
+
+.header{
+    height: 56px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
+}
+
+.profil{
+    display: block;
+    padding-top: 16px;
+    width: 96%;
+    text-align: right;
+    font-weight: bold;
+}
+
+.table-name{
+    text-align: center;
+    display: block;
+    padding-top: 24px;
+    font-weight: bold;
+    font-size: 20px;
+}
