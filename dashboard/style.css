@@ -18,6 +18,8 @@ body {
     text-align: left;
     padding: 30px 55px 0px 50px;
     line-height: 0.7;
+    width: 80%;
+    margin: 0 10% 0 10%;
 }
 
 .logo strong {

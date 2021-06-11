@@ -1,7 +1,27 @@
+@font-face {
+    font-family: Poppins-Regular;
+    src: url('fonts/poppins/Poppins-Regular.ttf');
+}
+
+@font-face {
+    font-family: Poppins-Medium;
+    src: url('fonts/poppins/Poppins-Medium.ttf');
+}
+
+@font-face {
+    font-family: Poppins-Bold;
+    src: url('fonts/poppins/Poppins-Bold.ttf');
+}
+
+@font-face {
+    font-family: Poppins-SemiBold;
+    src: url('fonts/poppins/Poppins-SemiBold.ttf');
+}
+
 html,
 body {
     height: 100%;
-    font-family: Roboto;
+    font-family: Poppins-Regular;
     margin: 0;
 }
 
@@ -46,7 +66,7 @@ body {
     text-align: left;
     padding: 200px 55px 55px 100px;
     line-height: 1.2;
-    font-weight: bold;
+    font-family: Poppins-SemiBold;
 }
 
 .bottom-welcome {
@@ -75,7 +95,7 @@ body {
     width: 100%;
     text-align: center;
     display: block;
-    font-weight: bold;
+    font-family: Poppins-SemiBold;
     font-size: 36px;
     line-height: 1.2;
 }
@@ -141,7 +161,7 @@ body {
     margin-top: 8px;
 }
 
-a {
+.forgot-password a {
     font-size: 14px;
     line-height: 1.7;
     color: #666666;
@@ -154,11 +174,11 @@ a {
     text-decoration: none;
 }
 
-a:focus {
+.forgot-password a:focus {
     outline: none !important;
 }
 
-a:hover {
+.forgot-password a:hover {
     text-decoration: none;
     color: #219653;
 }
@@ -179,13 +199,17 @@ a:hover {
     align-items: center;
     flex-wrap: wrap;
     padding: 0 20px;
-    letter-spacing: 2;
     background: #219653;
-    color: white;
     border: none;
-    border-radius: 40px;
 }
 
 .button-login:hover {
     cursor: pointer;
+}
+
+.login a {
+    text-decoration: none;
+    color: white;
+    letter-spacing: 2;
+    font-family: Poppins-SemiBold;
 }
