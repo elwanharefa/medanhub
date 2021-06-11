@@ -88,7 +88,8 @@ body {
 
 .form {
     display: block;
-    padding: 173px 55px 55px 55px;
+    width: 80%;
+    margin: 20% 10% 0 10%;
 }
 
 .masuk {
