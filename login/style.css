@@ -18,10 +18,25 @@
     src: url('fonts/poppins/Poppins-SemiBold.ttf');
 }
 
+@font-face {
+    font-family: Inter-Regular;
+    src: url('fonts/Inter/static/Inter-Regular.ttf');
+}
+
+@font-face {
+    font-family: Inter-Medium;
+    src: url('fonts/Inter/static/Inter-Medium.ttf');
+}
+
+@font-face {
+    font-family: Inter-SemiBold;
+    src: url('fonts/Inter/static/Inter-SemiBold.ttf');
+}
+
 html,
 body {
     height: 100%;
-    font-family: Poppins-Regular;
+    font-family: Inter-Regular;
     margin: 0;
 }
 
@@ -66,7 +81,7 @@ body {
     text-align: left;
     padding: 200px 55px 55px 100px;
     line-height: 1.2;
-    font-family: Poppins-SemiBold;
+    font-family: Inter-SemiBold;
 }
 
 .bottom-welcome {
@@ -84,19 +99,20 @@ body {
     float: right;
     width: 50%;
     height: 100%;
+    color: #4f4f4f;
 }
 
 .form {
     display: block;
     width: 80%;
-    margin: 20% 10% 0 10%;
+    margin: 25% 10% 0 10%;
 }
 
 .masuk {
     width: 100%;
     text-align: center;
     display: block;
-    font-family: Poppins-SemiBold;
+    font-family: Inter-SemiBold;
     font-size: 36px;
     line-height: 1.2;
 }
@@ -212,5 +228,5 @@ body {
     text-decoration: none;
     color: white;
     letter-spacing: 2;
-    font-family: Poppins-SemiBold;
+    font-family: Inter-SemiBold;
 }
