@@ -1,0 +1,89 @@
+.leftContent,
+.rightContent {
+  height: 100vh;
+}
+
+.welcomeMessage {
+  position: fixed;
+  margin-top: 160px;
+  margin-left: 120px;
+}
+
+.welcomeMessage>h1 {
+  font-size: 56px;
+}
+
+.welcomeMessage>h5 {
+  font-size: 24px;
+}
+
+#loginLogo {
+  margin-left: 60px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  text-align: end;
+}
+
+.rightContent {
+  margin: auto;
+  padding-top: 140px;
+  width: 80%;
+}
+
+.form-floating,
+.form-check,
+.login,
+.forgotPassword {
+  width: 80%;
+  margin: auto;
+}
+
+.form-check,
+.form-check-label,
+.form-check-input {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.bg-primary {
+  background: #1D976C;
+  background: -webkit-linear-gradient(to left, #7ad69c, #1D976C);
+  background: linear-gradient(to left, #7ad69c, #1D976C);
+}
+
+.btn {
+  background: #1D976C;
+  border-color: #1D976C;
+}
+
+.buttonLogin>button>b {
+  background-color: unset !important;
+  color: unset !important;
+}
+
+a :hover {
+  color: #1D976C;
+}
+
+.buttonLogin :hover {
+  background: #15855d;
+  border-color: #15855d;
+}
+
+.leftContent>h5>.display-6 {
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.leftContent>h5>b {
+  font-size: 1.25rem;
+
+}

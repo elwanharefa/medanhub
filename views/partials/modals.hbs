@@ -1,0 +1,295 @@
+{{! Modals }}
+{{! Create Modal }}
+<div
+  class="modal fade"
+  id="createModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <b>
+            Tambah
+            {{title}}
+          </b>
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="namaLayanan"
+            placeholder="Nama {{title}}"
+          />
+          <label for="floatingInput">
+            Nama
+            {{title}}
+          </label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            placeholder="username"
+          />
+          <label for="floatingInput">
+            Username
+          </label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="kontakLayanan"
+            placeholder="Kontak Layanan"
+          />
+          <label for="floatingPassword">
+            No. Telp/HP
+          </label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="email"
+            class="form-control"
+            id="alamatEmail"
+            placeholder="name@example.com"
+          />
+          <label for="floatingInput">
+            Alamat Email
+          </label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="kataSandi"
+            placeholder="Password"
+          />
+          <label for="floatingPassword">
+            Kata Sandi (min. 6 karakter)
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="flexCheckDefault"
+            onclick="showPassword()"
+          />
+          <label class="form-check-label" for="flexCheckDefault">
+            Tampilkan kata sandi
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Batal
+        </button>
+        <button type="button" class="btn btn-primary btnTambah">
+          Tambah
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{{! Detail modal-lg }}
+<div
+  class="modal fade"
+  id="detailModalLG"
+  tabindex="-1"
+  aria-labelledby="detailModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailModalLabel">
+          <b>
+            Detail
+            {{title}}
+          </b>
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" id="detailBodyLG">
+        {{! Template modal body content }}
+      </div>
+      <div class="modal-footer" id="detailFooterLG">
+        {{! Template modal body footer }}
+      </div>
+    </div>
+  </div>
+</div>
+{{! Detail modal-sm }}
+<div
+  class="modal fade"
+  id="detailModal"
+  tabindex="-1"
+  aria-labelledby="detailModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailModalLabel">
+          <b>
+            Detail
+            {{title}}
+          </b>
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" id="detailBody">
+        {{! Template modal body content }}
+      </div>
+      <div class="modal-footer" id="detailFooter">
+        {{! Template modal body footer }}
+      </div>
+    </div>
+  </div>
+</div>
+{{! Update modal }}
+<form action="" method="POST" class="users-update-record-model form-horizontal">
+  <div
+    class="modal fade"
+    id="updateModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            <b>
+              Edit
+              {{title}}
+            </b>
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" id="updateBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Batal
+          </button>
+          <button type="button" class="btn btn-primary updateButton">
+            Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{{! Delete modal }}
+<form action="" method="POST" class="users-remove-record-model">
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            <b>
+              Hapus
+              {{title}}
+            </b>
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Apakah anda yakin ingin menghapus
+            {{title}}
+            ini dari database?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal
+          </button>
+          <button type="button" class="btn btn-danger deleteButton">
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{{! Logout modal }}
+<div
+  class="modal fade"
+  id="logoutModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <b>
+            Keluar
+          </b>
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Apakah anda yakin ingin keluar?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Batal
+        </button>
+        <button type="button" class="btn btn-danger btnLogout">
+          Keluar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

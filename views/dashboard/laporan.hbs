@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{title}}</title>
+
+  {{> style}}
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+
+      {{>sidebar}}
+      
+      <div class="content shadow">
+        <div class="profilName mt-3">
+          <a class="btn " href="" role="button" id="namaUser"></a>
+        </div>
+        <hr>
+        </hr>
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <h2 class="mt-2">Laporan Diterima</h2>
+
+              <div class="infoTotalUser mt-2">
+                <button type="button" class="btn btn-light btn-sm" id="totalUserButton">
+                  Total
+                  {{title}}
+                  -
+                </button>
+              </div>
+
+              <!-- Table -->
+              <table class="table mt-3 caption-top">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">
+                      Username
+                    </th>
+                    <th scope="col">
+                      Deskripsi
+                    </th>
+                    <th scope="col">
+                      Tanggal
+                    </th>
+                    <th scope="col">
+                      Kategori
+                    </th>
+                    <th scope="col">
+                      Ditangani oleh
+                    </th>
+                    <th scope="col">
+                      Status
+                    </th>
+                    <th scope="col">
+                      Aksi
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
+
+              {{>modals}}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{>scripts}}
+
+  <script>
+    // Main database
+    var firebaseConfig = {
+      apiKey: "AIzaSyAqBdVf2NAlmHxoifm-VSPqi9QfP3Nqc4g",
+      authDomain: "medanhub-96de0.firebaseapp.com",
+      databaseURL: "https://medanhub-96de0-default-rtdb.firebaseio.com",
+      projectId: "medanhub-96de0",
+      storageBucket: "medanhub-96de0.appspot.com",
+      messagingSenderId: "1068361137842",
+      appId: "1:1068361137842:web:e2f633f70994469b3b13ab",
+      measurementId: "G-33MDKE0SSY"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    // Firestore
+
+    var db = firebase.firestore();
+
+    var lastIndex = 0;
+
+    // Get data
+    var laporanRef = db.collection('laporan').orderBy('tanggal', 'desc').get().then((querySnapshot) => {
+      var htmls = [];
+      var totalUser = 'Total {{title}}  ' + querySnapshot.size;
+      $('#totalUserButton').html(totalUser);
+      querySnapshot.forEach((doc, index) => {
+        var value = doc.data();
+        var ms = new Date(value.tanggal);
+        var tanggal = ms.toLocaleDateString('id-ID');
+        htmls.push('<tr>\
+          <td>' + value.username + '</td>\
+          <td>' + value.deskripsi + '</td>\
+          <td>' + tanggal + '</td>\
+          <td>' + value.nama_kategori + '</td>\
+          <td>' + value.nama_layanan + '</td>\
+          <td>' + value.status +
+          '</td>\
+          <td><button type="button" class="btn btn-primary detailLaporan" data-bs-toggle="modal" data-bs-target="#detailModalLG" data-id="' +
+          doc.id + '">Detail</button></td>\
+          </tr>');
+        lastIndex = index;
+      });
+      $('#tbody').html(htmls);
+    });
+
+    // Read data
+    var detailID = 0;
+    $('body').on('click', '.detailLaporan', function () {
+      detailID = $(this).attr('data-id');
+      var laporanRef = db.collection('laporan').doc(detailID);
+      laporanRef.get().then((doc) => {
+        if (doc.exists) {
+          var values = doc.data();
+          var ms = new Date(values.tanggal);
+          var tanggal = ms.toLocaleDateString('id-ID');
+          userLapor = values.userId;
+          var userRef = db.collection("user").doc(userLapor).get().then((doc) => {
+              if (doc.exists) {
+                  var userData = doc.data().username;
+                  console.log(userData);
+              } else {
+                  console.log("User tidak ditemukan!");
+              }
+          }).catch((error) => {
+              console.log("Error getting document:", error);
+          });
+          
+          var detailData = '<div class="row">\
+            <div class="col">\
+            <h6><b>Gambar Laporan</b></h6>\
+            <img src="' + values.gambar + '" width="360px">\
+            <h6 class="mt-4"><b>Tanggal Laporan</b></h6>' +
+            tanggal +
+            '</div>\
+            <div class="col"><h6><b>Akun</b></h6>' + values.username +
+            '<h6 class="mt-4"><b>Lokasi</b></h6>' + values.alamat + ', ' + values.kelurahan + ', ' + values
+            .kecamatan +
+            '<h6 class="mt-4"><b>Deskripsi</b></h6>' + values.deskripsi +
+            '<h6 class="mt-4"><b>Kategori</b></h6>' + values.nama_kategori +
+            '<h6 class="mt-4"><b>Ditangani oleh</b></h6>' + values.nama_layanan +
+            '<h6 class="mt-4"><b>Status</b></h6>' + values.status +
+            '</div>\
+            </div>';
+          $('#detailBodyLG').html(detailData);
+          var detailButton =
+            '<button type="button" class="btn btn-danger deleteLaporan" data-bs-target="#deleteModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' +
+            detailID +
+            '">Hapus</button>\
+            <button type="button" class="btn btn-primary editLaporan updateLaporan" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' +
+            detailID + '">Edit</button>';
+          $('#detailFooterLG').html(detailButton);
+        } else {
+          console.log("No such document!");
+        }
+      }).catch((error) => {
+        console.log("Error getting document:", error);
+      });
+    });
+
+    // Update data
+    var updateID = 0;
+    $('body').on('click', '.updateLaporan', function() {
+      // Retrieve data
+      updateID = $(this).attr('data-id');
+      var laporanRef = db.collection('laporan').doc(updateID);
+      laporanRef.get().then((doc) => {
+        if (doc.exists) {
+          var values = doc.data();
+          var updateData = '<div class="form-group">\
+              <label for="edit_kategori" class="col-md-12 col-form-label"><h6>Kategori</h6></label>\
+              <div class="col-md-12">\
+                <input id="edit_kategori" type="text" class="form-control" name="edit_kategori" value="' + values.nama_kategori + '" placeholder="Kategori" required autofocus>\
+              </div>\
+            </div>\
+            <div class="form-group mt-3">\
+              <label for="edit_layananpublik" class="col-md-12 col-form-label"><h6>Layanan Publik</h6></label>\
+              <div class="col-md-12">\
+                <input id="edit_layananpublik" type="text" class="form-control" name="edit_layananpublik" value="' + values.nama_layanan + '" placeholder="Layanan Publik" required autofocus>\
+              </div>\
+            </div>\
+            <div class="form-group mt-3">\
+              <label for="edit_status" class="col-md-12 col-form-label"><h6>Status</h6></label>\
+              <select class="form-select selectStatus" aria-label="Default select example">\
+                <option selected>' + values.status + '</option>\
+                <option value="Selesai">Selesai</option>\
+                <option value="Menunggu Penanganan">Menunggu Penanganan</option>\
+                <option value="Tidak Dapat Ditangani">Tidak Dapat Ditangani</option>\
+              </select>\
+            </div>';       
+          $('#updateBody').html(updateData);
+
+          $('.updateButton').on('click', function() {
+            // Update data
+            var values = $(".users-update-record-model").serializeArray();
+            var newStatus = document.querySelector('.selectStatus').value;
+            return laporanRef.update({
+              nama_kategori: values[0].value,
+              nama_layanan: values[1].value,
+              status: newStatus,
+            })
+            .then(() => {
+              alert('Berhasil menyimpan data');
+              location.reload();
+            })
+            .catch((error) => {
+              console.error("Error updating document: ", error);
+            });
+          })
+        }
+      })
+    });
+
+    // Delete data
+    var hapusID = 0;
+    $("body").on('click', '.deleteLaporan', function () {
+      hapusID = $(this).attr('data-id');
+      $('body').find('.users-remove-record-model').append('<input name="id" type="hidden" value="' + hapusID +
+        '">');
+    });
+
+    $('.deleteButton').on('click', function () {
+      var values = $(".users-remove-record-model").serializeArray();
+      var id = values[0].value;
+      db.collection("laporan").doc(hapusID).delete().then(() => {
+        $('body').find('.users-remove-record-model').find("input").remove();
+        // Hide Modal
+        $("#deleteModal").modal('hide');
+        // Show Alert
+        alert("Berhasil menghapus data");
+        location.reload();
+      }).catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+    });
+  </script>
+
+  <script>
+    // Secondary firebase for auth
+    var secondaryAppConfig = {
+      apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
+      authDomain: "medan-hub-app.firebaseapp.com",
+      databaseURL: "https://medan-hub-app-default-rtdb.firebaseio.com",
+      projectId: "medan-hub-app",
+      storageBucket: "medan-hub-app.appspot.com",
+      messagingSenderId: "668919371549",
+      appId: "1:668919371549:web:09ef6c412699b58d1433f4"
+    };
+
+    var secondaryApp = firebase.initializeApp(secondaryAppConfig, "secondary");
+
+    var auth = secondaryApp.auth();
+
+    var adminDB = secondaryApp.firestore();
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            var userprofile = [];
+            var adminRef = adminDB.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+          });
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      }
+    });
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // An error happened.
+      });
+    });
+  </script>
+
+  <script>
+    // Active tab indicator
+    document.getElementById("navLaporan").style.background = "#15855d";
+  </script>
+
+</body>
+
+</html>

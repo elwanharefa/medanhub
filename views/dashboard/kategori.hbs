@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{title}}</title>
+
+  {{> style}}
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+
+      {{>sidebar}}
+
+      <div class="content shadow">
+        <div class="profilName mt-3">
+          <a class="btn " href="" role="button" id="namaUser"></a>
+        </div>
+        <hr>
+        </hr>
+        
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <h2 class="mt-2">{{title}}</h2>
+
+              <div class="infoTotalUser mt-2">
+                <button type="button" class="btn btn-light btn-sm" id="totalUserButton">
+                  Total {{title}} {{total}}
+                </button>
+              </div>
+
+              <!-- Table -->
+              <table class="table mt-3 caption-top">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">
+                      ID
+                    </th>
+                    <th scope="col">
+                      Nama {{title}}
+                    </th>
+                    <th scope="col">
+                      Nama Layanan
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+              </table>
+
+              {{>modals}}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{>scripts}}
+
+  <script>
+    // Main database
+    var firebaseConfig = {
+      apiKey: "AIzaSyAqBdVf2NAlmHxoifm-VSPqi9QfP3Nqc4g",
+      authDomain: "medanhub-96de0.firebaseapp.com",
+      databaseURL: "https://medanhub-96de0-default-rtdb.firebaseio.com",
+      projectId: "medanhub-96de0",
+      storageBucket: "medanhub-96de0.appspot.com",
+      messagingSenderId: "1068361137842",
+      appId: "1:1068361137842:web:e2f633f70994469b3b13ab",
+      measurementId: "G-33MDKE0SSY"
+    };
+  </script>
+
+  <script>
+    // Secondary firebase for auth
+    var secondaryAppConfig = {
+      apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
+      authDomain: "medan-hub-app.firebaseapp.com",
+      databaseURL: "https://medan-hub-app-default-rtdb.firebaseio.com",
+      projectId: "medan-hub-app",
+      storageBucket: "medan-hub-app.appspot.com",
+      messagingSenderId: "668919371549",
+      appId: "1:668919371549:web:09ef6c412699b58d1433f4"
+    };
+
+    var secondaryApp = firebase.initializeApp(secondaryAppConfig, "secondary");
+
+    var auth = secondaryApp.auth();
+
+    var db = secondaryApp.firestore();
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            //console.log(user);
+            var userprofile = [];
+            var adminRef = db.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+          });
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      }
+    });
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // An error happened.
+      });
+    });
+
+    $('body').on('click', 'navCoba', function () {
+      // ...
+    });
+  </script>
+
+  <script>
+    // Get data and render to html
+    var tK = {{{dK}}};
+    $('#tbody').html(tK);
+  </script>
+
+  <script>
+    // Active tab indicator
+    document.getElementById("navKategori").style.background = "#15855d";
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.table>tbody>tr>* {
+  vertical-align: middle;
+}
+
+.navigasi,
+.content {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.navigasi {
+  float: left;
+  width: 15%;
+  overflow-y: auto;
+}
+
+ul {
+  width: 100%;
+  padding: 0;
+}
+
+li {
+  width: 100%;
+}
+
+.navCoba:hover {
+  background: #15855d;
+}
+
+.content {
+  float: right;
+  width: 85%;
+}
+
+.navigasi>h5>.display-6 {
+  font-size: 1rem;
+}
+
+#dashboardLogo {
+  text-align: left;
+  padding-left: 50px;
+  line-height: 1;
+  position: fixed;
+}
+
+.sidenav {
+  position: fixed;
+  margin-top: 200px;
+  padding: 0;
+  width: 15%;
+}
+
+.nav-link {
+  padding-left: 50px;
+}
+
+.logout {
+  position: fixed;
+  bottom: 80px;
+  padding-left: 50px;
+  width: 15%;
+}
+
+.navCoba:active {
+  background-color: #1D976C !important;
+}
+
+.profilName {
+  height: 52px;
+  width: 100%;
+  text-align: right;
+  position: block;
+}
+
+.bg-primary,
+.btn-primary {
+  background: #1D976C !important;
+  border-color: #1D976C !important;
+}
+
+.page-link {
+  color: #1D976C !important;
+}
+
+#profilePicture {
+  object-fit: cover;
+  width: 240px;
+  height: 240px;
+}
+
+.form-check,
+.form-check-label,
+.form-check-input {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}

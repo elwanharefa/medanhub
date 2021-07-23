@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{title}}</title>
+
+  {{> style}}
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+
+      {{>sidebar}}
+      
+      <div class="content shadow">
+        <div class="profilName mt-3">
+          <a class="btn " href="" role="button" id="namaUser"></a>
+        </div>
+        <hr>
+        </hr>
+        <div class="container">
+          <div class="row g-2">
+            <div class="col-md">
+              <h2 class="mt-2">{{title}}</h2>
+
+              {{!-- some content --}}
+              <form action="" method="post" class="users-update-record">
+                <div class="userData pt-3 ">
+                  <div class="form-floating mt-3">
+                    <input type="email" class="form-control" id="inputEmail" placeholder="name@example.com" />
+                    <label for="inputEmail">
+                      Email
+                    </label>
+                  </div>
+                </div>
+                <div class="form-floating mt-3">
+                  <input type="password" class="form-control" id="inputPassword" placeholder="Password" />
+                  <label for="inputPassword">
+                    Kata Sandi Baru (min. 6 karakter)
+                  </label>
+                </div>
+
+                <div class="form-check mt-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                    onclick="showPassword()"
+                  />
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Tampilkan kata sandi
+                  </label>
+                </div>
+
+                <div class="d-grid gap-2 col-6 mt-3">
+                  <button class="btn btn-outline-primary btnVerification" id="btnVerification" type="button">
+                    Verifikasi Email
+                  </button>
+                </div>
+
+                <div class="row g-8 mt-3 pt-3">
+                  <div class="col-sm-8">
+                    <button type="button" class="btn btn-danger btnDelete" data-bs-target="#deleteModal" data-bs-toggle="modal"
+                    data-bs-dismiss="modal">
+                      Hapus
+                    </button>
+                  </div>
+                  <div class="col-sm-4 d-flex justify-content-end">
+                    <div class="col">
+                      <button type="button" class="btn btn-secondary btnCancel">
+                      Batal
+                      </button>
+                    </div>
+                    <div class="col">
+                      <button type="button" class="btn btn-primary btnUpdate">
+                      Simpan
+                      </button>
+                    </div>
+                    
+
+                  </div>
+                </div>
+                
+
+              </form>
+            </div>
+            <div class="col-md">
+
+            </div>
+          </div>
+        </div>
+        {{! Delete modal }}
+        <form action="" method="POST" class="users-remove-record-model">
+          <div
+            class="modal fade"
+            id="deleteModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    <b>
+                      Hapus Akun
+                    </b>
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    Apakah anda yakin ingin menghapus akun ini secara permanen?
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Batal
+                  </button>
+                  <button type="button" class="btn btn-danger deleteButton">
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        {{! Logout modal }}
+        <div
+          class="modal fade"
+          id="logoutModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  <b>
+                    Keluar
+                  </b>
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                Apakah anda yakin ingin keluar?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  Batal
+                </button>
+                <button type="button" class="btn btn-danger btnLogout">
+                  Keluar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{>scripts}}
+
+  <script>
+    // Main database
+    var firebaseConfig = {
+      apiKey: "AIzaSyAqBdVf2NAlmHxoifm-VSPqi9QfP3Nqc4g",
+      authDomain: "medanhub-96de0.firebaseapp.com",
+      databaseURL: "https://medanhub-96de0-default-rtdb.firebaseio.com",
+      projectId: "medanhub-96de0",
+      storageBucket: "medanhub-96de0.appspot.com",
+      messagingSenderId: "1068361137842",
+      appId: "1:1068361137842:web:e2f633f70994469b3b13ab",
+      measurementId: "G-33MDKE0SSY"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script>
+    // Secondary firebase for auth
+    var secondaryAppConfig = {
+      apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
+      authDomain: "medan-hub-app.firebaseapp.com",
+      databaseURL: "https://medan-hub-app-default-rtdb.firebaseio.com",
+      projectId: "medan-hub-app",
+      storageBucket: "medan-hub-app.appspot.com",
+      messagingSenderId: "668919371549",
+      appId: "1:668919371549:web:09ef6c412699b58d1433f4"
+    };
+
+    var secondaryApp = firebase.initializeApp(secondaryAppConfig, "secondary");
+
+    var auth = secondaryApp.auth();
+
+    var db = secondaryApp.firestore();
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            var userprofile = [];
+            var adminRef = db.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+
+            var data = [];
+            data.push('<div class="form-floating mt-3"><input type="email" class="form-control userEmail" id="inputEmail" placeholder="name@example.com" value="' + profile.email + '">\
+            <label for="inputEmail">Email</label></div>');
+            $('.userData').html(data);
+          });
+          // Email verification
+          if (user.emailVerified == true) {
+            document.getElementById("btnVerification").disabled = true;
+            $("#btnVerification").html('Email telah terverifikasi');
+            $('body').on('click', '.btnVerification', function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+            });  
+          } else {
+            $('body').on('click', '.btnVerification', function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              auth.currentUser.sendEmailVerification()
+              .then(() => {
+                alert('Email verifikasi terkirim, periksa kotak masuk atau folder spam');
+              });
+            });
+          };
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      };
+    });
+
+    // Update user
+    $('.btnUpdate').on('click', function() {
+      var newEmail = document.querySelector('#inputEmail').value;
+      var newPassword = document.querySelector('#inputPassword').value;
+      const user = auth.currentUser;
+      var oldEmail = user.email;
+      
+      // Update to database
+      var adminRef = db.collection('admin').where('email', '==', oldEmail).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          var userData = doc.id;
+          console.log(userData);
+          if (newEmail != null) {
+            newAdminRef = db.collection('admin').doc(userData);
+            return newAdminRef.update({
+              email: newEmail,
+            }).then(() => {
+              // Update to auth
+              const user = auth.currentUser;
+              user.updateEmail(newEmail).then(() => {
+                if (newPassword != "") {
+                  user.updatePassword(newPassword);
+                  alert('Update password berhasil');  
+                  window.location.href ="/login";
+                } else {
+                  alert('Update email berhasil');
+                  location.reload();
+                };
+              }).catch((error) => {
+                // error
+              });
+            });
+          } else {
+            alert("Silahkan isi email dengan benar");
+          }
+        })
+      });      
+    });
+
+    // Delete user
+    $('body').on('click','.deleteButton', function () {
+      const user = auth.currentUser;
+      var oldEmail = user.email;
+
+      // Delete from database
+      var adminRef = db.collection('admin').where('email', '==', oldEmail).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          var userData = doc.id;
+          newAdminRef = db.collection('admin').doc(userData).delete().then(() => {
+            // Delete from auth
+            user.delete().then(() => {
+              alert('Berhasil menghapus user');
+              window.location.href = "/login";
+            }).catch((error) => {
+              // An error ocurred
+              // ...
+            });
+          });
+        });
+      });
+    });
+
+    // Cancel update and go back
+    $('body').on('click', '.btnCancel', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.history.back();
+    }); 
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // An error happened.
+      });
+    });
+  </script>
+
+  <script>
+    // Show Password
+    function showPassword() {
+      var x = document.getElementById("inputPassword");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    };
+  </script>
+
+</body>
+
+</html>
