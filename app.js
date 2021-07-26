@@ -12,7 +12,7 @@ const { O_APPEND } = require("constants");
 
 // Initialize elasticsearch
 const esClient = elasticsearch.Client({
-  host: "http://192.168.88.238:9200/",
+  host: "http://192.168.1.8:9200/",
 });
 
 // Handlebars partials
@@ -93,10 +93,10 @@ app.get("/kategori", (req, res) => {
               </tr>"
           );
         }
-        var data = [];
-        for (var j = 0; j < 1; j++) {
-          data.push(dataID, dataKategori, dataLayanan);
-        }
+        // var data = [];
+        // for (var j = 0; j < 1; j++) {
+        //   data.push(dataID, dataKategori, dataLayanan);
+        // }
       }
       // Convert JSON to string
       var dK = JSON.stringify(tabel);

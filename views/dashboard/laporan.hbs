@@ -45,6 +45,9 @@
                       Username
                     </th>
                     <th scope="col">
+                      Nama Lengkap
+                    </th>
+                    <th scope="col">
                       Deskripsi
                     </th>
                     <th scope="col">
@@ -112,6 +115,7 @@
         var tanggal = ms.toLocaleDateString('id-ID');
         htmls.push('<tr>\
           <td>' + value.username + '</td>\
+          <td>' + value.nama_lengkap + '</td>\
           <td>' + value.deskripsi + '</td>\
           <td>' + tanggal + '</td>\
           <td>' + value.nama_kategori + '</td>\
@@ -139,8 +143,34 @@
           userLapor = values.userId;
           var userRef = db.collection("user").doc(userLapor).get().then((doc) => {
               if (doc.exists) {
-                  var userData = doc.data().username;
+                  var userData = doc.data().fullname;
                   console.log(userData);
+                  var detailData = '<div class="row">\
+                    <div class="col">\
+                    <h6><b>Gambar Laporan</b></h6>\
+                    <img src="' + values.gambar + '" width="360px">\
+                    <h6 class="mt-4"><b>Tanggal Laporan</b></h6>' +
+                    tanggal +
+                    '</div>\
+                    <div class="col"><h6><b>Akun</b></h6>' + values.username +
+                    '<h6 class="mt-4"><b>Nama Lengkap</b></h6>' +
+                    userData +
+                    '<h6 class="mt-4"><b>Lokasi</b></h6>' + values.alamat + ', ' + values.kelurahan + ', ' + values
+                    .kecamatan +
+                    '<h6 class="mt-4"><b>Deskripsi</b></h6>' + values.deskripsi +
+                    '<h6 class="mt-4"><b>Kategori</b></h6>' + values.nama_kategori +
+                    '<h6 class="mt-4"><b>Ditangani oleh</b></h6>' + values.nama_layanan +
+                    '<h6 class="mt-4"><b>Status</b></h6>' + values.status +
+                    '</div>\
+                    </div>';
+                  $('#detailBodyLG').html(detailData);
+                  var detailButton =
+                    '<button type="button" class="btn btn-danger deleteLaporan" data-bs-target="#deleteModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' +
+                    detailID +
+                    '">Hapus</button>\
+                    <button type="button" class="btn btn-primary editLaporan updateLaporan" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' +
+                    detailID + '">Edit</button>';
+                  $('#detailFooterLG').html(detailButton);
               } else {
                   console.log("User tidak ditemukan!");
               }
@@ -148,30 +178,7 @@
               console.log("Error getting document:", error);
           });
           
-          var detailData = '<div class="row">\
-            <div class="col">\
-            <h6><b>Gambar Laporan</b></h6>\
-            <img src="' + values.gambar + '" width="360px">\
-            <h6 class="mt-4"><b>Tanggal Laporan</b></h6>' +
-            tanggal +
-            '</div>\
-            <div class="col"><h6><b>Akun</b></h6>' + values.username +
-            '<h6 class="mt-4"><b>Lokasi</b></h6>' + values.alamat + ', ' + values.kelurahan + ', ' + values
-            .kecamatan +
-            '<h6 class="mt-4"><b>Deskripsi</b></h6>' + values.deskripsi +
-            '<h6 class="mt-4"><b>Kategori</b></h6>' + values.nama_kategori +
-            '<h6 class="mt-4"><b>Ditangani oleh</b></h6>' + values.nama_layanan +
-            '<h6 class="mt-4"><b>Status</b></h6>' + values.status +
-            '</div>\
-            </div>';
-          $('#detailBodyLG').html(detailData);
-          var detailButton =
-            '<button type="button" class="btn btn-danger deleteLaporan" data-bs-target="#deleteModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' +
-            detailID +
-            '">Hapus</button>\
-            <button type="button" class="btn btn-primary editLaporan updateLaporan" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' +
-            detailID + '">Edit</button>';
-          $('#detailFooterLG').html(detailButton);
+          
         } else {
           console.log("No such document!");
         }
