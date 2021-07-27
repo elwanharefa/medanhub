@@ -44,9 +44,9 @@
                     <th scope="col">
                       Username
                     </th>
-                    <th scope="col">
+                    {{!-- <th scope="col">
                       Nama Lengkap
-                    </th>
+                    </th> --}}
                     <th scope="col">
                       Deskripsi
                     </th>
@@ -115,7 +115,6 @@
         var tanggal = ms.toLocaleDateString('id-ID');
         htmls.push('<tr>\
           <td>' + value.username + '</td>\
-          <td>' + value.nama_lengkap + '</td>\
           <td>' + value.deskripsi + '</td>\
           <td>' + tanggal + '</td>\
           <td>' + value.nama_kategori + '</td>\
