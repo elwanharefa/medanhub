@@ -49,13 +49,59 @@
                     <th scope="col">
                       Nama Layanan
                     </th>
+                    <th scope="col">
+                      Aksi
+                    </th>
                   </tr>
                 </thead>
                 <tbody id="tbody">
                 </tbody>
               </table>
 
-              {{>modals}}
+              <form action="" method="POST" class="users-update-record-model form-horizontal">
+                <div
+                  class="modal fade"
+                  id="tambahDeskripsi"
+                  tabindex="-1"
+                  aria-labelledby="detailModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">
+                          <b>
+                            Tambah Deskripsi
+                            {{title}}
+                          </b>
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body" id="detailBodyLG">
+                        <div class="form-group">
+                          <label for="edit_kategori" class="col-md-12 col-form-label"><h6>Deskripsi</h6></label>
+                          <div class="col-md-12">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Tambah deskripsi untuk kategori ini..."></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer" id="detailFooterLG">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                          Batal
+                        </button>
+                        <button type="button" class="btn btn-primary updateButton">
+                          Simpan
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
 
             </div>
           </div>
@@ -143,6 +189,13 @@
     // Get data and render to html
     var tK = {{{dK}}};
     $('#tbody').html(tK);
+
+    $('body').on('click', '.detail', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var detailID = $(this).attr('data-id');
+      console.log(detailID);
+    })
   </script>
 
   <script>

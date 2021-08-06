@@ -101,6 +101,7 @@
     // Firestore
 
     var db = firebase.firestore();
+    var fireauth = firebase.auth();
 
     var lastIndex = 0;
 
@@ -140,11 +141,10 @@
           username: username,
           email: email,
           contactnumber: kontakLayanan,
-          password: password
       }).then(() => {
         console.log("berhasil menambah user!");
         // Register new user
-        auth.createUserWithEmailAndPassword(email, password);
+        fireauth.createUserWithEmailAndPassword(email, password);
         location.reload();
       })
       .catch((error) => {

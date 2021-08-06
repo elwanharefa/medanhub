@@ -12,7 +12,7 @@ const { O_APPEND } = require("constants");
 
 // Initialize elasticsearch
 const esClient = elasticsearch.Client({
-  host: "http://192.168.1.8:9200/",
+  host: "192.168.88.238:9200/",
 });
 
 // Handlebars partials
@@ -26,6 +26,8 @@ app.set("view engine", "hbs");
 
 // Set public folder as static folder for static file
 app.use(express.static("public"));
+
+app.use(express.json());
 
 // Index
 app.get("/", (req, res) => {
@@ -89,8 +91,11 @@ app.get("/kategori", (req, res) => {
               "</td>\
           <td>" +
               dataLayanan[j] +
-              "</td>\
-              </tr>"
+              '</td>\
+              <td><form action="" method="POST"><input type="submit" class="btn btn-primary detail" data-bs-toggle="modal" data-bs-target="#tambahDeskripsi" value="Detail" data-id="' +
+              dataID[j] +
+              '"></input></form></td>\
+              </tr>'
           );
         }
         // var data = [];
@@ -107,9 +112,15 @@ app.get("/kategori", (req, res) => {
       });
     })
     .catch((err) => {
-      return res.status(500).json({ message: "Error" });
+      return res.status(500).json({
+        message: "Error",
+      });
     });
 });
+
+// app.post("/kategori", (req, res) => {
+//   console.log(JSON.stringify(req.body));
+// });
 
 // User
 app.get("/user", (req, res) => {
