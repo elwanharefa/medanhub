@@ -136,7 +136,7 @@
       var password = document.querySelector('#kataSandi').value;
 
       // Add user to database
-      db.collection('instansi').add({
+      /*db.collection('instansi').add({
           fullname: namaLayanan,
           username: username,
           email: email,
@@ -149,7 +149,21 @@
       })
       .catch((error) => {
         console.error("Error writing document: ", error);
-      });
+      });*/
+
+      fireauth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
+        var user_id = userCredential.user.uid;
+        console.log(user_id);
+        db.collection('instansi').doc(user_id).set({
+          //uid: user_id,
+          fullname: namaLayanan,
+          username: username,
+          email: email,
+          contactnumber: kontakLayanan,
+        }).then(() => {
+          location.reload();
+        })
+      })
     });
 
     // Read data
@@ -163,7 +177,7 @@
           var detailData = '<div class="row">\
             <div class="col">\
             <h6><b>Foto Profil</b></h6>\
-            <img src="' + values.picture + '" alt="" id="profilePicture">\
+            <img src="' + values.fotoProfilInstansi + '" alt="" id="profilePicture">\
             </div>\
             <div class="col"><h6><b>Username</b></h6>' + values.username +
             '<h6 class="mt-4"><b>Nama Layanan</b></h6>' + values.fullname +

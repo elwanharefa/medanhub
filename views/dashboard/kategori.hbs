@@ -103,6 +103,8 @@
                 </div>
               </form>
 
+              {{!-- {{deskripsi}} --}}
+
             </div>
           </div>
         </div>
@@ -189,6 +191,10 @@
     // Get data and render to html
     var tK = {{{dK}}};
     $('#tbody').html(tK);
+
+    /*var isiDeskripsi = [];
+    isiDeskripsi.push('{{deskripsi}}');
+    console.log(isiDeskripsi[0]);*/
 
     $('body').on('click', '.detail', function (e) {
       e.preventDefault();

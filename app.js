@@ -12,7 +12,7 @@ const { O_APPEND } = require("constants");
 
 // Initialize elasticsearch
 const esClient = elasticsearch.Client({
-  host: "192.168.88.238:9200/",
+  host: "10.110.155.232:9200/",
 });
 
 // Handlebars partials
@@ -74,11 +74,13 @@ app.get("/kategori", (req, res) => {
       var dataID = [];
       var dataKategori = [];
       var dataLayanan = [];
+      var dataDeskripsi = [];
       var count = Object.keys(allHits).length;
       for (var i = 0; i < count; i++) {
         dataID[i] = allHits[i]._source.id;
         dataKategori[i] = allHits[i]._source.nama_kategori;
         dataLayanan[i] = allHits[i]._source.nama_layanan;
+        dataDeskripsi[i] = allHits[i]._source.deskripsi;
         var tabel = [];
         for (var j = 0; j < count; j++) {
           tabel.push(
@@ -94,7 +96,7 @@ app.get("/kategori", (req, res) => {
               '</td>\
               <td><form action="" method="POST"><input type="submit" class="btn btn-primary detail" data-bs-toggle="modal" data-bs-target="#tambahDeskripsi" value="Detail" data-id="' +
               dataID[j] +
-              '"></input></form></td>\
+              '" name="detail"></input></form></td>\
               </tr>'
           );
         }
@@ -109,6 +111,10 @@ app.get("/kategori", (req, res) => {
         title: "Kategori",
         total: count,
         dK: dK,
+        idKategori: dataID,
+        namaKategori: dataKategori,
+        namaLayanan: dataLayanan,
+        deskripsi: dataDeskripsi,
       });
     })
     .catch((err) => {

@@ -87,6 +87,10 @@ li {
   color: #1D976C !important;
 }
 
+img {
+  object-fit: cover;
+}
+
 #profilePicture {
   object-fit: cover;
   width: 240px;
