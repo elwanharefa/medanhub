@@ -152,21 +152,34 @@
       var password = document.querySelector('#kataSandi').value;
 
       // Add user to database
-      db.collection('admin').add({
+      /*db.collection('admin').add({
           fullname: namaAdmin,
           username: username,
           email: email,
-          phonenumber: phoneNumber,
-          password: password
+          phonenumber: phoneNumber
       }).then(() => {
         console.log("Berhasil menambah user!");
         // Register new user
-        secondaryApp.auth().createUserWithEmailAndPassword(email, password);
+        auth.createUserWithEmailAndPassword(email, password);
         location.reload();
       })
       .catch((error) => {
         console.error("Error writing document: ", error);
-      });
+      });*/
+
+      auth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
+        var user_id = userCredential.user.uid;
+        console.log(user_id);
+        db.collection('admin').doc(user_id).set({
+          id_admin: user_id,
+          fullname: namaAdmin,
+          username: username,
+          email: email,
+          phonenumber: phoneNumber,
+        }).then(() => {
+          location.reload();
+        })
+      })
     });
 
     // Read Data

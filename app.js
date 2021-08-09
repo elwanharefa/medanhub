@@ -12,7 +12,7 @@ const { O_APPEND } = require("constants");
 
 // Initialize elasticsearch
 const esClient = elasticsearch.Client({
-  host: "10.110.155.232:9200/",
+  host: "192.168.1.64:9200/",
 });
 
 // Handlebars partials

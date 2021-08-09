@@ -106,7 +106,7 @@
     var lastIndex = 0;
 
     // Get data
-    var layananRef = db.collection('instansi').orderBy('username', 'asc').get().then((querySnapshot) => {
+    var layananRef = db.collection('layanan_publik').orderBy('username', 'asc').get().then((querySnapshot) => {
       var htmls = [];
       var totalUser = 'Total {{title}} ' + querySnapshot.size;
       $('#totalUserButton').html(totalUser);
@@ -154,8 +154,8 @@
       fireauth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
         var user_id = userCredential.user.uid;
         console.log(user_id);
-        db.collection('instansi').doc(user_id).set({
-          //uid: user_id,
+        db.collection('layanan_publik').doc(user_id).set({
+          id_layanan: user_id,
           fullname: namaLayanan,
           username: username,
           email: email,
@@ -170,7 +170,7 @@
     var detailID = 0;
     $('body').on('click', '.detailLaporan', function() {
       detailID = $(this).attr('data-id');
-      var layananRef = db.collection('instansi').doc(detailID);
+      var layananRef = db.collection('layanan_publik').doc(detailID);
       layananRef.get().then((doc) => {
         if (doc.exists) {
           var values = doc.data();
@@ -202,7 +202,7 @@
     $('body').on('click', '.updateLaporan', function() {
       // Retrieve data
       updateID = $(this).attr('data-id');
-      var layananRef = db.collection('instansi').doc(updateID);
+      var layananRef = db.collection('layanan_publik').doc(updateID);
       layananRef.get().then((doc) => {
         if (doc.exists) {
           var values = doc.data();
@@ -250,7 +250,7 @@
     $('.deleteButton').on('click', function() {
       var values = $(".users-remove-record-model").serializeArray();
       var id = values[0].value;
-      db.collection("instansi").doc(hapusID).delete().then(() => {
+      db.collection("layanan_publik").doc(hapusID).delete().then(() => {
         $('body').find('.users-remove-record-model').find("input").remove();
         // Hide Modal
         $("#deleteModal").modal('hide');
