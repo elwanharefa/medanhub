@@ -114,7 +114,7 @@
         var value = doc.data();
         htmls.push('<tr>\
           <td>' + value.username + '</td>\
-          <td>' + value.fullname + '</td>\
+          <td>' + value.nama_layanan + '</td>\
           <td>' + value.email + '</td>\
           <td>(061) ' + value.contactnumber + '</td>\
           <td><button type="button" class="btn btn-primary detailLaporan" data-bs-toggle="modal" data-bs-target="#detailModalLG" data-id="' + doc.id + '">Detail</button></td>\
@@ -156,7 +156,7 @@
         console.log(user_id);
         db.collection('layanan_publik').doc(user_id).set({
           id_layanan: user_id,
-          fullname: namaLayanan,
+          nama_layanan: namaLayanan,
           username: username,
           email: email,
           contactnumber: kontakLayanan,
@@ -180,7 +180,7 @@
             <img src="' + values.fotoProfilInstansi + '" alt="" id="profilePicture">\
             </div>\
             <div class="col"><h6><b>Username</b></h6>' + values.username +
-            '<h6 class="mt-4"><b>Nama Layanan</b></h6>' + values.fullname +
+            '<h6 class="mt-4"><b>Nama Layanan</b></h6>' + values.nama_layanan +
             '<h6 class="mt-4"><b>Email</b></h6>' + values.email +
             '<h6 class="mt-4"><b>Kontak</b></h6>(061) ' + values.contactnumber +
             '</div>\
@@ -209,7 +209,7 @@
           var updateData = '<div class="form-group">\
               <label for="edit_kategori" class="col-md-12 col-form-label"><h6>Nama Tampilan</h6></label>\
               <div class="col-md-12">\
-                <input id="edit_kategori" type="text" class="form-control" name="edit_kategori" value="' + values.fullname + '" placeholder="Kategori" required autofocus>\
+                <input id="edit_kategori" type="text" class="form-control" name="edit_kategori" value="' + values.nama_layanan + '" placeholder="Kategori" required autofocus>\
               </div>\
             </div>\
             <div class="form-group mt-3">\
@@ -224,7 +224,7 @@
             // Update data
             var values = $(".users-update-record-model").serializeArray();
             return layananRef.update({
-              fullname: values[0].value,
+              nama_layanan: values[0].value,
               contactnumber: values[1].value
             })
             .then(() => {

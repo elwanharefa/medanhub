@@ -139,7 +139,7 @@
           var values = doc.data();
           var ms = new Date(values.tanggal);
           var tanggal = ms.toLocaleDateString('id-ID');
-          userLapor = values.userId;
+          userLapor = values.id_user;
           var userRef = db.collection("user").doc(userLapor).get().then((doc) => {
               if (doc.exists) {
                   var userData = doc.data().fullname;
@@ -147,7 +147,7 @@
                   var detailData = '<div class="row">\
                     <div class="col">\
                     <h6><b>Gambar Laporan</b></h6>\
-                    <img src="' + values.photo + '" width="360px" height="202.5px">\
+                    <img src="' + values.gambar_laporan + '" width="360px" height="202.5px">\
                     <h6 class="mt-4"><b>Tanggal Laporan</b></h6>' +
                     tanggal +
                     '<h6 class="mt-4"><b>Deskripsi Hasil Indexing</b></h6>' +
