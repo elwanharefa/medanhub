@@ -109,7 +109,7 @@
           <td>' + value.username + '</td>\
           <td>' + value.fullname + '</td>\
           <td>' + value.email + '</td>\
-          <td>0' + value.phonenumber + '</td>\
+          <td>' + value.phonenumber + '</td>\
           <td><button type="button" class="btn btn-primary detailLaporan" data-bs-toggle="modal" data-bs-target="#detailModalLG" data-id="' + doc.id + '">Detail</button></td>\
           </tr>');
         lastIndex = index;
@@ -128,12 +128,12 @@
           var detailData = '<div class="row">\
             <div class="col">\
             <h6><b>Foto Profil</b></h6>\
-           <img src="' + values.fotoProfil + '" alt="" id="profilePicture">\
+           <img src="' + values.foto_user + '" alt="" id="profilePicture">\
             </div>\
             <div class="col"><h6><b>Username</b></h6>' + values.username +
             '<h6 class="mt-4"><b>Nama Tampilan</b></h6>' + values.fullname +
             '<h6 class="mt-4"><b>Email</b></h6>' + values.email +
-            '<h6 class="mt-4"><b>No. HP</b></h6>0' + values.phonenumber +
+            '<h6 class="mt-4"><b>No. HP</b></h6>' + values.phonenumber +
             '</div>\
             </div>';
           $('#detailBodyLG').html(detailData);
