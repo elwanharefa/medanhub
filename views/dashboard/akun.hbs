@@ -196,9 +196,140 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+    var auth = firebase.auth();
+
+    var db = firebase.firestore();
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            var userprofile = [];
+            var adminRef = db.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+
+            var data = [];
+            data.push('<div class="form-floating mt-3"><input type="email" class="form-control userEmail" id="inputEmail" placeholder="name@example.com" value="' + profile.email + '">\
+            <label for="inputEmail">Email</label></div>');
+            $('.userData').html(data);
+          });
+          // Email verification
+          if (user.emailVerified == true) {
+            document.getElementById("btnVerification").disabled = true;
+            $("#btnVerification").html('Email telah terverifikasi');
+            $('body').on('click', '.btnVerification', function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+            });  
+          } else {
+            $('body').on('click', '.btnVerification', function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              auth.currentUser.sendEmailVerification()
+              .then(() => {
+                alert('Email verifikasi terkirim, periksa kotak masuk atau folder spam');
+              });
+            });
+          };
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      };
+    });
+
+    // Update user
+    $('.btnUpdate').on('click', function() {
+      var newEmail = document.querySelector('#inputEmail').value;
+      var newPassword = document.querySelector('#inputPassword').value;
+      const user = auth.currentUser;
+      var oldEmail = user.email;
+      
+      // Update to database
+      var adminRef = db.collection('admin').where('email', '==', oldEmail).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          var userData = doc.id;
+          console.log(userData);
+          if (newEmail != null) {
+            newAdminRef = db.collection('admin').doc(userData);
+            return newAdminRef.update({
+              email: newEmail,
+            }).then(() => {
+              // Update to auth
+              const user = auth.currentUser;
+              user.updateEmail(newEmail).then(() => {
+                if (newPassword != "") {
+                  user.updatePassword(newPassword);
+                  alert('Update password berhasil');  
+                  window.location.href ="/login";
+                } else {
+                  alert('Update email berhasil');
+                  location.reload();
+                };
+              }).catch((error) => {
+                // error
+              });
+            });
+          } else {
+            alert("Silahkan isi email dengan benar");
+          }
+        })
+      });      
+    });
+
+    // Delete user
+    $('body').on('click','.deleteButton', function () {
+      const user = auth.currentUser;
+      var oldEmail = user.email;
+
+      // Delete from database
+      var adminRef = db.collection('admin').where('email', '==', oldEmail).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          var userData = doc.id;
+          newAdminRef = db.collection('admin').doc(userData).delete().then(() => {
+            // Delete from auth
+            user.delete().then(() => {
+              alert('Berhasil menghapus user');
+              window.location.href = "/login";
+            }).catch((error) => {
+              // An error ocurred
+              // ...
+            });
+          });
+        });
+      });
+    });
+
+    // Cancel update and go back
+    $('body').on('click', '.btnCancel', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.history.back();
+    }); 
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // An error happened.
+      });
+    });
   </script>
 
-  <script>
+  {{!-- <script>
     // Secondary firebase for auth
     var secondaryAppConfig = {
       apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
@@ -342,7 +473,7 @@
         // An error happened.
       });
     });
-  </script>
+  </script> --}}
 
   <script>
     // Show Password

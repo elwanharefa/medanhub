@@ -121,7 +121,7 @@
     firebase.analytics();
 
     // Secondary firebase for auth
-    var secondaryAppConfig = {
+    /*var secondaryAppConfig = {
       apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
       authDomain: "medan-hub-app.firebaseapp.com",
       databaseURL: "https://medan-hub-app-default-rtdb.firebaseio.com",
@@ -133,7 +133,9 @@
 
     var secondaryApp = firebase.initializeApp(secondaryAppConfig, "secondary");
 
-    var login = secondaryApp.auth();
+    var login = secondaryApp.auth();*/
+
+    var login = firebase.auth()
 
     // Check user login
     login.onAuthStateChanged((admin) => {

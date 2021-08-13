@@ -97,9 +97,214 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+    var auth = firebase.auth();
+
+    var db = firebase.firestore();
+
+    var lastIndex = 0;
+
+    // Firestore
+
+    // Get data
+    var adminRef = db.collection('admin').orderBy('username', 'asc').get().then((querySnapshot) => {
+      var htmls = [];
+      var totalUser = 'Total {{title}}  ' + querySnapshot.size;
+      $('#totalUserButton').html(totalUser);
+      querySnapshot.forEach((doc, index) => {
+        var value = doc.data();
+        htmls.push('<tr>\
+          <td>' + value.username + '</td>\
+          <td>' + value.fullname + '</td>\
+          <td>' + value.email + '</td>\
+          <td>' + value.phonenumber + '</td>\
+          <td><button type="button" class="btn btn-primary detailLaporan" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="' + doc.id + '">Detail</button></td>\
+          </tr>');
+        lastIndex = index;
+      });
+      $('#tbody').html(htmls);
+    });
+
+    // Create data
+    $('body').on('click', '.btnTambah', function(e) {
+      var db = firebase.firestore();
+      e.preventDefault();
+      e.stopPropagation();
+      var namaAdmin = document.querySelector('#namaLayanan').value;
+      var username = document.querySelector('#username').value.toLowerCase();
+      var phoneNumber = document.querySelector('#kontakLayanan').value;
+      var email = document.querySelector('#alamatEmail').value;
+      var password = document.querySelector('#kataSandi').value;
+
+      // Add user to database
+      /*db.collection('admin').add({
+          fullname: namaAdmin,
+          username: username,
+          email: email,
+          phonenumber: phoneNumber
+      }).then(() => {
+        console.log("Berhasil menambah user!");
+        // Register new user
+        auth.createUserWithEmailAndPassword(email, password);
+        location.reload();
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });*/
+
+      auth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
+        var user_id = userCredential.user.uid;
+        console.log(user_id);
+        db.collection('admin').doc(user_id).set({
+          id_admin: user_id,
+          fullname: namaAdmin,
+          username: username,
+          email: email,
+          phonenumber: phoneNumber,
+        }).then(() => {
+          location.reload();
+        })
+      })
+    });
+
+    // Read Data
+    var detailID = 0;
+    $('body').on('click', '.detailLaporan', function() {
+      detailID = $(this).attr('data-id');
+      var adminRef = db.collection('admin').doc(detailID);
+      adminRef.get().then((doc) => {
+        if (doc.exists) {
+          var values = doc.data();
+          var detailData = '<div class="row">\
+          <div class="col"><h6><b>Username</b></h6>' + values.username +
+          '<h6 class="mt-4"><b>Nama {{title}}</b></h6>' + values.fullname +
+          '<h6 class="mt-4"><b>Email</b></h6>' + values.email +
+          '<h6 class="mt-4"><b>No. HP</b></h6>' + values.phonenumber +
+          '</div>\
+          </div>';
+          $('#detailBody').html(detailData);
+          var detailButton = '<button type="button" class="btn btn-danger deleteLaporan" data-bs-target="#deleteModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' + detailID + '">Hapus</button>\
+            <button type="button" class="btn btn-primary editLaporan updateLaporan" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-id="' + detailID + '">Edit</button>';
+          $('#detailFooter').html(detailButton);
+        } else {
+          console.log("No such document!");
+        }
+      }).catch((error) => {
+        console.log("Error getting document:", error);
+      });
+    });
+
+    // Update data
+    var updateID = 0;
+    $('body').on('click', '.updateLaporan', function() {
+      // Retrieve data
+      updateID = $(this).attr('data-id');
+      var adminRef = db.collection('admin').doc(updateID);
+      adminRef.get().then((doc) => {
+        if (doc.exists) {
+          var values = doc.data();
+          var updateData = '<div class="form-group">\
+              <label for="edit_kategori" class="col-md-12 col-form-label"><h6>Nama {{title}}</h6></label>\
+              <div class="col-md-12">\
+                <input id="edit_kategori" type="text" class="form-control" name="edit_kategori" value="' + values.fullname + '" placeholder="Kategori" required autofocus>\
+              </div>\
+            </div>\
+            <div class="form-group mt-3">\
+              <label for="editUsername" class="col-md-12 col-form-label"><h6>Username</h6></label>\
+              <div class="col-md-12">\
+                <input id="editUsername" type="text" class="form-control" name="editUsername" value="' + values.username + '" placeholder="Layanan Publik" required>\
+              </div>\
+            <div class="form-group mt-3">\
+              <label for="edit_layananpublik" class="col-md-12 col-form-label"><h6>No. HP</h6></label>\
+              <div class="col-md-12">\
+                <input id="edit_layananpublik" type="text" class="form-control" name="edit_layananpublik" value="' + values.phonenumber + '" placeholder="Layanan Publik" required>\
+              </div>\
+            </div>';       
+          $('#updateBody').html(updateData);
+
+          $('.updateButton').on('click', function() {
+            // Update data
+            var values = $(".users-update-record-model").serializeArray();
+            return adminRef.update({
+              fullname: values[0].value,
+              username: values[1].value,
+              phonenumber: values[2].value,
+            })
+            .then(() => {
+              alert('Berhasil menyimpan data');
+              location.reload();
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+          })
+        }
+      })
+    });
+
+    // Delete from database
+    var hapusID = 0;
+    $("body").on('click', '.deleteLaporan', function () {
+      hapusID = $(this).attr('data-id');
+      $('body').find('.users-remove-record-model').append('<input name="id" type="hidden" value="' + hapusID +
+        '">');
+    });
+
+    $('.deleteButton').on('click', function () {
+      var values = $(".users-remove-record-model").serializeArray();
+      var id = values[0].value;
+      db.collection("admin").doc(hapusID).delete().then(() => {
+        $('body').find('.users-remove-record-model').find("input").remove();
+        // Hide Modal
+        $("#deleteModal").modal('hide');
+        // Show Alert
+        alert("Berhasil menghapus data");
+        location.reload();
+      }).catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+    });
+
+    // Auth 
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            var userprofile = [];
+            var adminRef = db.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+          });
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      }
+    });
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // ...
+      });
+    });
   </script>
 
-  <script>
+  {{!-- <script>
     // Secondary firebase for auth
     var secondaryAppConfig = {
       apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
@@ -225,6 +430,11 @@
               </div>\
             </div>\
             <div class="form-group mt-3">\
+              <label for="edit_layananpublik" class="col-md-12 col-form-label"><h6>Username</h6></label>\
+              <div class="col-md-12">\
+                <input id="edit_layananpublik" type="text" class="form-control" name="edit_layananpublik" value="' + values.username + '" placeholder="Layanan Publik" required autofocus>\
+              </div>\
+            <div class="form-group mt-3">\
               <label for="edit_layananpublik" class="col-md-12 col-form-label"><h6>No. HP</h6></label>\
               <div class="col-md-12">\
                 <input id="edit_layananpublik" type="text" class="form-control" name="edit_layananpublik" value="' + values.phonenumber + '" placeholder="Layanan Publik" required autofocus>\
@@ -237,7 +447,8 @@
             var values = $(".users-update-record-model").serializeArray();
             return adminRef.update({
               fullname: values[0].value,
-              phonenumber: values[1].value,
+              username: values[1].value,
+              phonenumber: values[2].value,
             })
             .then(() => {
               alert('Berhasil menyimpan data');
@@ -311,7 +522,7 @@
         // ...
       });
     });
-  </script>
+  </script> --}}
 
   <script>
     // Show Password

@@ -213,8 +213,9 @@
               <label for="edit_status" class="col-md-12 col-form-label"><h6>Status</h6></label>\
               <select class="form-select selectStatus" aria-label="Default select example">\
                 <option selected>' + values.status + '</option>\
-                <option value="Selesai">Selesai</option>\
                 <option value="Menunggu Penanganan">Menunggu Penanganan</option>\
+                <option value="Sedang Ditangani">Sedang Ditangani</option>\
+                <option value="Selesai">Selesai</option>\
                 <option value="Tidak Dapat Ditangani">Tidak Dapat Ditangani</option>\
               </select>\
             </div>';       
@@ -263,9 +264,47 @@
         console.error("Error removing document: ", error);
       });
     });
+
+    // Auth
+    var auth = firebase.auth();
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            var userprofile = [];
+            var adminRef = db.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+          });
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      }
+    });
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // An error happened.
+      });
+    });
   </script>
 
-  <script>
+  {{!-- <script>
     // Secondary firebase for auth
     var secondaryAppConfig = {
       apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
@@ -317,7 +356,7 @@
         // An error happened.
       });
     });
-  </script>
+  </script> --}}
 
   <script>
     // Active tab indicator

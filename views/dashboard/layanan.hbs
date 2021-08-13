@@ -213,6 +213,11 @@
               </div>\
             </div>\
             <div class="form-group mt-3">\
+              <label for="edit_layananpublik" class="col-md-12 col-form-label"><h6>Username</h6></label>\
+              <div class="col-md-12">\
+                <input id="edit_layananpublik" type="text" class="form-control" name="edit_layananpublik" value="' + values.username + '" placeholder="Layanan Publik" required autofocus>\
+              </div>\
+            <div class="form-group mt-3">\
               <label for="edit_layananpublik" class="col-md-12 col-form-label"><h6>Kontak</h6></label>\
               <div class="col-md-12">\
                 <input id="edit_layananpublik" type="text" class="form-control" name="edit_layananpublik" value="' + values.contactnumber + '" placeholder="Layanan Publik" required autofocus>\
@@ -225,7 +230,8 @@
             var values = $(".users-update-record-model").serializeArray();
             return layananRef.update({
               nama_layanan: values[0].value,
-              contactnumber: values[1].value
+              username: values[1].value,
+              contactnumber: values[2].value
             })
             .then(() => {
               alert('Berhasil menyimpan data');
@@ -261,9 +267,54 @@
         console.error("Error removing document: ", error);
       });
     });
+
+    // Auth
+
+    var auth = firebase.auth();
+
+    var adminDB = firebase.firestore();
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            var userprofile = [];
+            var adminRef = adminDB.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+          });
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      }
+    });
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // An error happened.
+      });
+    });
+    
+    $('body').on('click', 'navCoba', function () {
+      // ...
+    });
   </script>
 
-  <script>
+  {{!-- <script>
     // Secondary firebase for auth
     var secondaryAppConfig = {
       apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
@@ -319,7 +370,7 @@
     $('body').on('click', 'navCoba', function () {
       // ...
     });
-  </script>
+  </script> --}}
 
   <script>
     // Show Password

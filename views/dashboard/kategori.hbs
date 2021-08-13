@@ -126,9 +126,59 @@
       appId: "1:1068361137842:web:e2f633f70994469b3b13ab",
       measurementId: "G-33MDKE0SSY"
     };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    // Auth
+
+    var auth = firebase.auth();
+
+    var db = firebase.firestore();
+
+    // Check user login
+    auth.onAuthStateChanged((admin) => {
+      if (admin) {
+        const user = auth.currentUser;
+
+        if (user !== null) {
+          user.providerData.forEach((profile) => {
+            //console.log(user);
+            var userprofile = [];
+            var adminRef = db.collection('admin').where('email', '==', user.email).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                var userData = doc.data();
+                userprofile.push('<a class="btn btn-outline-dark" href="/akun" role="button">' + userData.fullname +
+                '</a>');
+                $('#namaUser').html(userprofile);
+              });
+            });
+          });
+        }
+      } else {
+        window.location.href = "/login";
+        alert('Anda sudah logout, silahkan login terlebih dahulu');
+      }
+    });
+
+    // User logout
+    $('body').on('click', '.btnLogout', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var logout = auth.signOut().then(() => {
+        window.location.href = "/login";
+      }).catch((error) => {
+        // An error happened.
+      });
+    });
+
+    $('body').on('click', 'navCoba', function () {
+      // ...
+    });
   </script>
 
-  <script>
+  {{!-- <script>
     // Secondary firebase for auth
     var secondaryAppConfig = {
       apiKey: "AIzaSyByZj6k6R2f3PUPiB11Wvr29or4lC8mJtE",
@@ -185,7 +235,7 @@
     $('body').on('click', 'navCoba', function () {
       // ...
     });
-  </script>
+  </script> --}}
 
   <script>
     // Get data and render to html
