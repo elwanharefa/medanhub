@@ -162,9 +162,12 @@
           email: email,
           phonenumber: phoneNumber,
         }).then(() => {
-          location.reload();
-        })
-      })
+          //location.reload();
+          var logout = auth.signOut().then(() => {
+            window.location.href = "/login";
+          });
+        });
+      });
     });
 
     // Read Data

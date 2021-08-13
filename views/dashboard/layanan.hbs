@@ -161,9 +161,11 @@
           email: email,
           contactnumber: kontakLayanan,
         }).then(() => {
-          location.reload();
-        })
-      })
+          var logout = auth.signOut().then(() => {
+            window.location.href = "/login";
+          });
+        });
+      });
     });
 
     // Read data
