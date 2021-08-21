@@ -199,15 +199,34 @@
           var values = doc.data();
           var updateData = '<div class="form-group">\
               <label for="edit_kategori" class="col-md-12 col-form-label"><h6>Kategori</h6></label>\
-              <div class="col-md-12">\
-                <input id="edit_kategori" type="text" class="form-control" name="edit_kategori" value="' + values.nama_kategori + '" placeholder="Kategori" required autofocus>\
-              </div>\
+              <select class="form-select selectKategori" aria-label="Default select example">\
+                <option selected>' + values.nama_kategori + '</option>\
+                <option value="Kecelakaan">Kecelakaan</option>\
+                <option value="Jalan Rusak">Jalan Rusak</option>\
+                <option value="Listrik">Listrik</option>\
+                <option value="Kebakaran">Kebakaran</option>\
+                <option value="Banjir">Banjir</option>\
+                <option value="Layanan PDAM">Layanan PDAM</option>\
+                <option value="Sampah">Sampah</option>\
+                <option value="Tawuran">Tawuran</option>\
+                <option value="Kriminal">Kriminal</option>\
+                <option value="Kemacetan">Kemacetan</option>\
+              </select>\
             </div>\
             <div class="form-group mt-3">\
               <label for="edit_layananpublik" class="col-md-12 col-form-label"><h6>Layanan Publik</h6></label>\
-              <div class="col-md-12">\
-                <input id="edit_layananpublik" type="text" class="form-control" name="edit_layananpublik" value="' + values.nama_layanan + '" placeholder="Layanan Publik" required autofocus>\
-              </div>\
+              <select class="form-select selectLayanan" aria-label="Default select example">\
+                <option selected>' + values.nama_layanan + '</option>\
+                <option value="SATLANTAS Kota Medan">SATLANTAS Kota Medan</option>\
+                <option value="Dinas Pekerjaan Umum Kota Medan">Dinas Pekerjaan Umum Kota Medan</option>\
+                <option value="Perusahaan Listrik Negara Kota Medan">Perusahaan Listrik Negara Kota Medan</option>\
+                <option value="Dinas Pencegahan dan Pemadam Kebakaran Kota Medan">Dinas Pencegahan dan Pemadam Kebakaran Kota Medan</option>\
+                <option value="Dinas Sumber Daya Air Kota Medan">Dinas Sumber Daya Air Kota Medan</option>\
+                <option value="Perusahaan Daerah Air Minum Tirtanadi Kota Medan">Perusahaan Daerah Air Minum Tirtanadi Kota Medan</option>\
+                <option value="Dinas Kebersihan dan Pertamanan Kota Medan">Dinas Kebersihan dan Pertamanan Kota Medan</option>\
+                <option value="Kepolisian Resort Kota Medan">Kepolisian Resort Kota Medan</option>\
+                <option value="Dinas Perhubungan Kota Medan">Dinas Perhubungan Kota Medan</option>\
+              </select>\
             </div>\
             <div class="form-group mt-3">\
               <label for="edit_status" class="col-md-12 col-form-label"><h6>Status</h6></label>\
@@ -223,11 +242,13 @@
 
           $('.updateButton').on('click', function() {
             // Update data
-            var values = $(".users-update-record-model").serializeArray();
+            //var values = $(".users-update-record-model").serializeArray();
+            var newKategori = document.querySelector('.selectKategori').value;
+            var newLayanan = document.querySelector('.selectLayanan').value;
             var newStatus = document.querySelector('.selectStatus').value;
             return laporanRef.update({
-              nama_kategori: values[0].value,
-              nama_layanan: values[1].value,
+              nama_kategori: newKategori,
+              nama_layanan: newLayanan,
               status: newStatus,
             })
             .then(() => {
