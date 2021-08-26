@@ -162,22 +162,21 @@
                     <div class="col">\
                     <h6><b>Gambar Laporan</b></h6>\
                     <img src="' + values.gambar_laporan + '" width="360px" height="202.5px">\
-                    <h6 class="mt-4"><b>Tanggal Laporan</b></h6>' +
-                    tanggal +
-                    '<h6 class="mt-4"><b>Belum Ditangani Selama</b></h6>' +
-                    selisihHari +
-                    '<h6 class="mt-4"><b>Deskripsi Hasil Indexing</b></h6>' +
-                    values.desBersih +
+                    <h6 class="mt-4"><b>Lokasi</b></h6>' + values.alamat + ', ' + values.kelurahan + ', ' + values
+                    .kecamatan +
+                    '<h6 class="mt-4"><b>Tanggal Laporan</b></h6>' + tanggal +
+                    '<h6 class="mt-4"><b>Bobot Pencarian</b></h6>' +
+                    values.total_bobot +
                     '</div>\
                     <div class="col"><h6><b>Username</b></h6>' + values.username +
                     '<h6 class="mt-4"><b>Nama Lengkap</b></h6>' +
                     userData +
-                    '<h6 class="mt-4"><b>Lokasi</b></h6>' + values.alamat + ', ' + values.kelurahan + ', ' + values
-                    .kecamatan +
                     '<h6 class="mt-4"><b>Deskripsi</b></h6>' + values.deskripsi +
                     '<h6 class="mt-4"><b>Kategori</b></h6>' + values.nama_kategori +
                     '<h6 class="mt-4"><b>Ditangani oleh</b></h6>' + values.nama_layanan +
                     '<h6 class="mt-4"><b>Status</b></h6>' + values.status +
+                    '<h6 class="mt-4"><b>Belum Ditangani Selama</b></h6>' +
+                    selisihHari +
                     '</div>\
                     </div>';
                   $('#detailBodyLG').html(detailData);
