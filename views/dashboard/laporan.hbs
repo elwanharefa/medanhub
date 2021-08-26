@@ -138,8 +138,22 @@
         if (doc.exists) {
           var values = doc.data();
           var ms = new Date(values.tanggal);
+          var waktu = new Date();
+          var waktuMs = waktu.getTime();
+          var selisih = waktuMs - values.tanggal;
+          //var selisihHari = Math.ceil(selisih / (1000 * 60 * 60 * 24)); 
+          //console.log(selisihHari + " hari");
           var tanggal = ms.toLocaleDateString('id-ID');
           userLapor = values.id_user;
+
+          if (values.status == "Menunggu Penanganan") {
+            var selisihHari = Math.ceil(selisih / (1000 * 60 * 60 * 24)) + " hari";
+          } else if (values.status == "Tidak Dapat Ditangani"){
+            var selisihHari = "Laporan Tidak Ditangani";
+          } else {
+            var selisihHari = "Laporan Ditangani";
+          } 
+
           var userRef = db.collection("user").doc(userLapor).get().then((doc) => {
               if (doc.exists) {
                   var userData = doc.data().fullname;
@@ -150,6 +164,8 @@
                     <img src="' + values.gambar_laporan + '" width="360px" height="202.5px">\
                     <h6 class="mt-4"><b>Tanggal Laporan</b></h6>' +
                     tanggal +
+                    '<h6 class="mt-4"><b>Belum Ditangani Selama</b></h6>' +
+                    selisihHari +
                     '<h6 class="mt-4"><b>Deskripsi Hasil Indexing</b></h6>' +
                     values.desBersih +
                     '</div>\

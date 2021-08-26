@@ -124,9 +124,9 @@ app.get("/kategori", (req, res) => {
     });
 });
 
-// app.post("/kategori", (req, res) => {
-//   console.log(JSON.stringify(req.body));
-// });
+app.post("/kategori", (req, res) => {
+  console.log(JSON.stringify(req.body));
+});
 
 // User
 app.get("/user", (req, res) => {
