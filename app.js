@@ -12,7 +12,8 @@ const { O_APPEND } = require("constants");
 
 // Initialize elasticsearch
 const esClient = elasticsearch.Client({
-  host: "192.168.1.8:9200/",
+  host: "localhost:9200/",
+  // host: "192.168.1.8:9200/",
 });
 
 // Handlebars partials
@@ -93,11 +94,8 @@ app.get("/kategori", (req, res) => {
               "</td>\
           <td>" +
               dataLayanan[j] +
-              '</td>\
-              <td><form action="" method="POST"><input type="submit" class="btn btn-primary detail" data-bs-toggle="modal" data-bs-target="#tambahDeskripsi" value="Detail" data-id="' +
-              dataID[j] +
-              '" name="detail"></input></form></td>\
-              </tr>'
+              "</td>\
+              </tr>"
           );
         }
         // var data = [];
